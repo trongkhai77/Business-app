@@ -10,6 +10,7 @@ import ExploreBusinessList from "../../components/Explore/ExploreBusinessList";
 export default function explore() {
   const [businessList, setBusinessList] = useState([]);
   const getBusinessByCategory = async (category) => {
+    setBusinessList([]);
     const q = query(
       collection(db, "BusinessList"),
       where("category", "==", category)
@@ -24,7 +25,7 @@ export default function explore() {
   return (
     <View style={{ padding: 20 }}>
       <Text style={{ fontFamily: "outfit-bold", fontSize: 30 }}>
-        Explor More
+        Explore More
       </Text>
       {/* Search Bar */}
       <View
