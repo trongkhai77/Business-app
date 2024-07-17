@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { Colors } from "../../constants/Colors";
 import { useAuth } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
 
 export default function MenuList() {
   const { signOut } = useAuth();
@@ -18,7 +19,7 @@ export default function MenuList() {
       id: 1,
       name: "Add Business",
       icon: require("./../../assets/images/add.png"),
-      path: "add",
+      path: "business/add-business",
     },
     {
       id: 2,
@@ -39,6 +40,8 @@ export default function MenuList() {
       path: "logout",
     },
   ];
+
+  const router = useRouter();
 
   const onMenuClick = (item) => {
     if (item.path == "logout") {
@@ -64,6 +67,7 @@ export default function MenuList() {
         message: "Download the Business Directory App by Kai!",
       });
     }
+    router.push(item.path);
   };
 
   return (
