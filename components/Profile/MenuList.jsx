@@ -44,6 +44,9 @@ export default function MenuList() {
   const router = useRouter();
 
   const onMenuClick = (item) => {
+    if (item.path == "business/add-business") {
+      router.push(item.path);
+    }
     if (item.path == "logout") {
       Alert.alert(
         "Confirm Logout",
@@ -67,7 +70,6 @@ export default function MenuList() {
         message: "Download the Business Directory App by Kai!",
       });
     }
-    router.push(item.path);
   };
 
   return (
