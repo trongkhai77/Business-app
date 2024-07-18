@@ -1,10 +1,47 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ToastAndroid,
+} from "react-native";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../configs/FirebaseConfig";
 
 export default function Intro({ business }) {
   const router = useRouter();
+  const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+
+  const OnDelete = () => {
+    Alert.alert(
+      "Do you want to Delete?",
+      "Do you really want to Delete this Business?",
+      [
+        {
+          text: "Cancle",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => deleteBusiness(),
+        },
+      ]
+    );
+  };
+
+  const deleteBusiness = async () => {
+    console.log("Delete Business");
+    await deleteDoc(doc(db, "BusinessList", business?.id));
+    router.back();
+    ToastAndroid.show("Business Deleted!", ToastAndroid.LONG);
+  };
 
   return (
     <View>
@@ -39,9 +76,27 @@ export default function Intro({ business }) {
           borderTopRightRadius: 25,
         }}
       >
-        <Text style={{ fontSize: 24, fontFamily: "outfit-bold" }}>
-          {business.name}
-        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: "outfit-bold",
+            }}
+          >
+            {business.name}
+          </Text>
+          {user?.primaryEmailAddress?.emailAddress == business.userEmail ? (
+            <TouchableOpacity onPress={() => OnDelete()}>
+              <Ionicons name="trash" size={24} color="red" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
         <Text style={{ fontFamily: "outfit", fontSize: 16 }}>
           {business.address}
         </Text>

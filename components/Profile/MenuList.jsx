@@ -25,7 +25,7 @@ export default function MenuList() {
       id: 2,
       name: "My Business",
       icon: require("./../../assets/images/business-and-trade.png"),
-      path: "mine",
+      path: "business/my-business",
     },
     {
       id: 3,
@@ -44,9 +44,12 @@ export default function MenuList() {
   const router = useRouter();
 
   const onMenuClick = (item) => {
-    if (item.path == "business/add-business") {
-      router.push(item.path);
-    }
+    // if (item.path == "business/add-business") {
+    //   router.push(item.path);
+    // }
+    // if (item.path == "business/my-business") {
+    //   router.push(item.path);
+    // }
     if (item.path == "logout") {
       Alert.alert(
         "Confirm Logout",
@@ -64,11 +67,12 @@ export default function MenuList() {
         ],
         { cancelable: false }
       );
-    }
-    if (item.path == "share") {
+    } else if (item.path == "share") {
       Share.share({
         message: "Download the Business Directory App by Kai!",
       });
+    } else {
+      router.push(item.path);
     }
   };
 
